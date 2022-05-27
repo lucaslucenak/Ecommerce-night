@@ -4,6 +4,7 @@ package com.almeida.Ecommercenoite.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Locale;
 
 @Data
 @AllArgsConstructor
@@ -27,4 +28,8 @@ public class ProdutoModel {
 
     @Column(name = "idCategoria")
     private Long idCategoria;
+
+    public ProdutoModel(String nome) {
+        this.nome = nome.toUpperCase(Locale.ROOT);
+    }
 }

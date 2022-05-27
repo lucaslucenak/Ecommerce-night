@@ -29,5 +29,5 @@ public class VendaModel {
     private Long idProduto;
 
     @Column(name = "foiEnviado")
-    private Boolean foiEnviado;
+    private Boolean foiEnviado = false;
 }
