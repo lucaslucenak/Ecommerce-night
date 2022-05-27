@@ -1,6 +1,7 @@
 package com.almeida.Ecommercenoite.models;
 
 
+import com.almeida.Ecommercenoite.enums.TipoPagamentoEnum;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,6 +28,9 @@ public class VendaModel {
 
     @Column(name = "idProduto")
     private Long idProduto;
+
+    @Column(name = "tipoPagamento")
+    private TipoPagamentoEnum tipoPagamento;
 
     @Column(name = "foiEnviado")
     private Boolean foiEnviado = false;
