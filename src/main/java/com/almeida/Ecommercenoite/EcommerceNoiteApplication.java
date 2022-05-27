@@ -1,19 +1,25 @@
 package com.almeida.Ecommercenoite;
 
+import com.almeida.Ecommercenoite.models.CategoriaModel;
+import com.almeida.Ecommercenoite.services.CategoriaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EcommerceNoiteApplication {
+public class EcommerceNoiteApplication implements CommandLineRunner {
 
-//	@Autowired
-//	private CategoriaService categoriaService;
+	@Autowired
+	private CategoriaService categoriaService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(EcommerceNoiteApplication.class, args);
-//		CategoriaService categoriaService = new CategoriaService();
+	}
 
-//		categoriaService.createCategoria(new CategoriaModel("Games"));
+	@Override
+	public void run(String... args) throws Exception {
+		categoriaService.createCategoria(new CategoriaModel("Games"));
 	}
 
 }
