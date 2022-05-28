@@ -5,11 +5,13 @@ import com.almeida.Ecommercenoite.models.ProdutoModel;
 import com.almeida.Ecommercenoite.repositories.CategoriaRepository;
 import com.almeida.Ecommercenoite.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
+@Service
 public class ProdutoService {
 
     public ProdutoService() {
@@ -36,5 +38,9 @@ public class ProdutoService {
 
     public List<ProdutoModel> findProdutoByNome(String nome) {
         return produtoRepository.findProdutoByNomeContains(nome.toUpperCase(Locale.ROOT));
+    }
+
+    public List<ProdutoModel> findProdutoByIdCategoria(String categoria) {
+        return produtoRepository.findProdutoByIdCategoriaContains(categoria);
     }
 }

@@ -1,6 +1,7 @@
 package com.almeida.Ecommercenoite.services;
 
 import com.almeida.Ecommercenoite.enums.UserTypeEnum;
+import com.almeida.Ecommercenoite.exceptions.UsernameTakenException;
 import com.almeida.Ecommercenoite.models.ProdutoModel;
 import com.almeida.Ecommercenoite.models.UsuarioModel;
 import com.almeida.Ecommercenoite.repositories.ProdutoRepository;
@@ -22,6 +23,9 @@ public class UsuarioService {
     public UsuarioRepository usuarioRepository;
 
     public UsuarioModel createUsuario(UsuarioModel usuarioModel) {
+        if (findUsuarioByNome(usuarioModel.getUsername()).size() != 0) {
+            throw new UsernameTakenException("Username ja cadastrado!");
+        }
         return usuarioRepository.save(usuarioModel);
     }
 

@@ -1,5 +1,6 @@
 package com.almeida.Ecommercenoite.services;
 
+import com.almeida.Ecommercenoite.exceptions.UsernameTakenException;
 import com.almeida.Ecommercenoite.models.CategoriaModel;
 import com.almeida.Ecommercenoite.repositories.CategoriaRepository;
 import lombok.*;
@@ -21,7 +22,11 @@ public class CategoriaService {
     @Autowired
     public CategoriaRepository categoriaRepository;
 
+
     public CategoriaModel createCategoria(CategoriaModel categoriaModel) {
+        if (findCategoriaByNome(categoriaModel.getNome()).size() != 0) {
+            throw new UsernameTakenException("Categoria ja cadastrada!");
+        }
         return categoriaRepository.save(categoriaModel);
     }
 
