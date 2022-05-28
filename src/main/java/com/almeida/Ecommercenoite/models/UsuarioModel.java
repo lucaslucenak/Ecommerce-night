@@ -15,6 +15,12 @@ import javax.persistence.*;
 @Table(name = "tb_usuarios")
 public class UsuarioModel {
 
+    public UsuarioModel(UserTypeEnum userType, String username, String password) {
+        this.userType = userType;
+        this.username = username;
+        this.password = password;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

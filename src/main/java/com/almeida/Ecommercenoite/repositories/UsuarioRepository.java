@@ -1,5 +1,6 @@
 package com.almeida.Ecommercenoite.repositories;
 
+import com.almeida.Ecommercenoite.enums.UserTypeEnum;
 import com.almeida.Ecommercenoite.models.ProdutoModel;
 import com.almeida.Ecommercenoite.models.UsuarioModel;
 import org.springframework.data.jpa.repository.JpaRepository;

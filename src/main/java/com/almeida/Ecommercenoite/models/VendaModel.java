@@ -32,6 +32,24 @@ public class VendaModel {
     @Column(name = "tipoPagamento")
     private TipoPagamentoEnum tipoPagamento;
 
+    @Column(name = "numeroEnderecoEnvio")
+    private String numeroEnderecoEnvio;
+
+    @Column(name = "ruaEnderecoEnvio")
+    private String ruaEnderecoEnvio;
+
+    @Column(name = "bairroEnderecoEnvio")
+    private String bairroEnderecoEnvio;
+
+    @Column(name = "cidadeEnderecoEnvio")
+    private String cidadeEnderecoEnvio;
+
+    @Column(name = "estadoEnderecoEnvio")
+    private String estadoEnderecoEnvio;
+
+    @Column(name = "cepEnderecoEnvio")
+    private String cepEnderecoEnvio;
+
     @Column(name = "foiEnviado")
     private Boolean foiEnviado = false;
 }
