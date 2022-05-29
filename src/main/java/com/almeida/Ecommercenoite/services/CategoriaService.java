@@ -22,6 +22,9 @@ public class CategoriaService {
     @Autowired
     public CategoriaRepository categoriaRepository;
 
+    public CategoriaModel updateCategoria(CategoriaModel categoriaModel) {
+        return categoriaRepository.save(categoriaModel);
+    }
 
     public CategoriaModel createCategoria(CategoriaModel categoriaModel) {
         if (findCategoriaByNome(categoriaModel.getNome()).size() != 0) {
