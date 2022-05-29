@@ -16,6 +16,12 @@ import java.util.Locale;
 @Table(name = "tb_produtos")
 public class ProdutoModel {
 
+    public ProdutoModel(String nome, Double preco, Long idCategoria) {
+        this.nome = nome;
+        this.preco = preco;
+        this.idCategoria = idCategoria;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

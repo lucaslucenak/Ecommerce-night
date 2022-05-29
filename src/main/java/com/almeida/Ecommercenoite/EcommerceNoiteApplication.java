@@ -36,6 +36,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		Scanner sc = new Scanner(System.in);
+		Scanner sc1 = new Scanner(System.in);
 		String opcaoMenu = "";
 
 		do {
@@ -46,7 +47,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 			System.out.print("Opcao: ");
 			opcaoMenu = sc.nextLine();
 
-			//LOGIN
+//--------------------------------------------------------LOGIN---------------------------------------------------------
 			if (Objects.equals(opcaoMenu, "1")) {
 				System.out.println("1. Login como Administrador" +
 						"\n2. Login como Vendedor" +
@@ -58,7 +59,8 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 				System.out.print("Opcao: ");
 				opcaoMenu = sc.nextLine();
 
-				if (Objects.equals(opcaoMenu, "1")) {
+//-------------------------------------------------LOGIN ADMINISTRADOR--------------------------------------------------
+				if (Objects.equals(opcaoMenu, "1")) { // OK
 					System.out.print("Username: ");
 					username = sc.nextLine();
 					System.out.print("Password: ");
@@ -67,11 +69,10 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 
 					if (isLoggedIn) {
 						do {
-							System.out.println("LOGOU LOGOU admin");
 							System.out.println("1. Criar nova categoria" +
 									"\n2. Pesquisar categoria" +
 									"\n3. Atualizar categoria" +
-									"\n4. Excluir categoria (Excluirá todos os produtos referentes)" +
+									"\n4. Excluir categoria" +
 									"\n5. Logout");
 							opcaoMenu = sc.nextLine();
 							switch (opcaoMenu) {
@@ -116,6 +117,11 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 									System.out.print("Opcao: ");
 									opcaoMenu = sc.nextLine();
 									if (opcaoMenu.equals("1")) {
+										List<CategoriaModel> categoriasDelete = categoriaService.getAllCategorias();
+										System.out.print("Categorias cadastradas:");
+										for (CategoriaModel i : categoriasDelete) {
+											System.out.println(i.getNome());
+										}
 										System.out.print("Categoria para deletar: ");
 										String nomeCategoriaDelete = sc.nextLine();
 										List<CategoriaModel> categoriaDelete = categoriaService.findCategoriaByNome(nomeCategoriaDelete);
@@ -138,9 +144,11 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 						} while (!opcaoMenu.equals("5"));
 					}
 					else {
-						System.out.println("Nao logou");
+						System.out.println("Login falhou.");
 					}
 				}
+
+//----------------------------------------------------LOGIN VENDEDOR----------------------------------------------------
 				else if (Objects.equals(opcaoMenu, "2")) {
 					System.out.print("Username: ");
 					username = sc.nextLine();
@@ -149,12 +157,90 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 					isLoggedIn = login(UserTypeEnum.Vendedor, username, password);
 
 					if (isLoggedIn) {
+						while(true) {
+							int menuVendedor;
+							System.out.println("1. Criar novo produto" +
+									"\n2. Pesquisar produto" +
+									"\n3. Atualizar produto" +
+									"\n4. Excluir produto" +
+									"\n5. Logout");
+							System.out.print("Opcao: ");
+							menuVendedor = sc.nextInt();
+							if (menuVendedor == 1) { // OK
+								System.out.println("Categorias:");
+								List<CategoriaModel> categorias = categoriaService.getAllCategorias();
+								for (CategoriaModel i : categorias) {
+									System.out.println(i.getNome());
+								}
+								System.out.print("Escolha a categoria: ");
+								String categoriaEscolhida = sc1.nextLine();
+								List<CategoriaModel> categoriasEscolhida = categoriaService.findCategoriaByNome(categoriaEscolhida);
+								if (categoriasEscolhida.size() > 0) {
+									System.out.print("Nome do produto: ");
+									String nomeProduto = sc1.nextLine();
+									System.out.println("Preco do produto: ");
+									Double precoProduto = sc.nextDouble();
+									produtoService.createProduto(new ProdutoModel(nomeProduto, precoProduto, categoriasEscolhida.get(0).getId()));
+								}
+							}
+							else if (menuVendedor == 2) { // OK
+								List<ProdutoModel> allProdutos = produtoService.getAllProdutos();
+								for (ProdutoModel i : allProdutos) {
+									System.out.println("Produto: " + i.getNome() + " Id Categoria: " + i.getIdCategoria());
+								}
+							}
+							else if (menuVendedor == 3) { // BUG
+								System.out.print("Nome da produto para atualizacao:");
+								String nomeAtualizacao = sc1.nextLine();
+								List<ProdutoModel> produtos = produtoService.findProdutoByNome(nomeAtualizacao);
+
+								if (produtos.size() > 0) {
+									System.out.print("Novo nome: ");
+									String novoNome = sc.nextLine();
+									Double novoPreco = sc.nextDouble();
+									produtoService.createProduto(new ProdutoModel(novoNome, novoPreco, produtos.get(0).getId()));
+									categoriaService.createCategoria(new CategoriaModel(novoNome));
+								}
+							}
+							else if (menuVendedor == 4) { //OK
+								System.out.println("Quer mesmo deletar o produto?");
+								System.out.println("1. Sim" +
+										"\n2. Não");
+								System.out.print("Opcao: ");
+								int opcaoDeletar = sc.nextInt();
+								if (opcaoDeletar == 1) {
+									List<ProdutoModel> produtosDelete = produtoService.getAllProdutos();
+									System.out.print("Produtos cadastrados:");
+									for (ProdutoModel i : produtosDelete) {
+										System.out.println(i.getNome());
+									}
+									System.out.print("Produto para deletar: ");
+									String nomeProdutoDelete = sc1.nextLine();
+									List<ProdutoModel> produtoDelete = produtoService.findProdutoByNome(nomeProdutoDelete);
+									if (produtoDelete.size() > 0) {
+										for (ProdutoModel i : produtoDelete) {
+											produtoService.deleteProdutoById(i.getId());
+										}
+									}
+								}
+							}
+							else if (menuVendedor == 5) {
+								break;
+							}
+							else {
+								System.out.println("opcao invalida.");
+							}
+						}
+
+
 						System.out.println("LOGOU LOGOU vendedor");
 					}
 					else {
 						System.out.println("Nao logou");
 					}
 				}
+
+//----------------------------------------------------LOGIN CLIENTE-----------------------------------------------------
 				else if (Objects.equals(opcaoMenu, "3")) {
 					System.out.print("Username: ");
 					username = sc.nextLine();
