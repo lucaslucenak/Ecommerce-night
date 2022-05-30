@@ -335,6 +335,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 
 								}
 								else if (opcaoRelatorio == 2) {
+									Double totalVendas = 0.0;
 									Set<Long> idsCategorias = new HashSet<>();
 									List<TotalVendasCategoria> totalVendasCategorias = new ArrayList<>();
 									for (VendaModel i : vendaService.getAllVendas()) {
@@ -344,6 +345,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 										totalVendasCategorias.add(new TotalVendasCategoria(i));
 									}
 									for (VendaModel i : vendaService.getAllVendas()) {
+										totalVendas += i.getValorVenda();
 										for (TotalVendasCategoria j : totalVendasCategorias) {
 											if (i.getIdCategoria().equals(j.getIdCategoria())) {
 												j.incrementTotalVendas(i.getValorVenda());
@@ -354,20 +356,21 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 										}
 									}
 									for (TotalVendasCategoria i : totalVendasCategorias) {
-										System.out.println(i.getNomeCategoria() + " - R$" + i.getTotalVendas());
+										System.out.println(i.getNomeCategoria() + " - R$" + i.getTotalVendas() + " - " + String.format("%.2f", (i.getTotalVendas() * 100) / totalVendas) + "%");
 									}
 								}
 								else if (opcaoRelatorio == 3) {
+									Double totalVendas = 0.0;
 									Set<Long> idsProdutos = new HashSet<>();
 									List<TotalVendasProdutos> totalVendasProdutos = new ArrayList<>();
 									for (VendaModel i : vendaService.getAllVendas()) {
 										idsProdutos.add(i.getIdProduto());
 									}
-									System.out.println("-----");
 									for (Long i : idsProdutos) {
 										totalVendasProdutos.add(new TotalVendasProdutos(i));
 									}
 									for (VendaModel i : vendaService.getAllVendas()) {
+										totalVendas += i.getValorVenda();
 										for (TotalVendasProdutos j : totalVendasProdutos) {
 											if (i.getIdProduto().equals(j.getIdProduto())) {
 												j.incrementTotalVendas(i.getValorVenda());
@@ -377,8 +380,8 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 											}
 										}
 									}
-									for (TotalVendasProdutos i : totalVendasProdutos) {
-										System.out.println(i.getNomeProduto() + " - R$" + i.getTotalVendas());
+									for (TotalVendasProdutos i : totalVendasProdutos) { // x = produto . 100 / total
+										System.out.println(i.getNomeProduto() + " - R$" + i.getTotalVendas() + " - " + String.format("%.2f", (i.getTotalVendas() * 100) / totalVendas) + "%");
 									}
 								}
 							}
