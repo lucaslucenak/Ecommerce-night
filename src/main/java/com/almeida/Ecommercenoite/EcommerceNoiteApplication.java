@@ -182,8 +182,9 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 									"\n2. Pesquisar produto" +
 									"\n3. Atualizar produto" +
 									"\n4. Excluir produto" +
-									"\n5. Editar Statud de envio de uma venda" +
-									"\n6. Logout");
+									"\n5. Listar vendas" +
+									"\n6. Editar Statud de envio de uma venda" +
+									"\n7. Logout");
 							System.out.print("Opcao: ");
 							opcaoMenuVendedor = Integer.parseInt(sc.nextLine());
 
@@ -276,6 +277,19 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 											"\nEndereco de envio: " + i.getEnderecoEnvio() +
 											"\nTipo de pagamento: " + i.getTipoPagamento() +
 											"\nStatus de envio: " + i.getFoiEnviado());
+									System.out.println("-----------------");
+								}
+							}
+							else if (opcaoMenuVendedor == 6) {
+								List<VendaModel> vendas = vendaService.getAllVendas();
+								for (VendaModel i : vendas) {
+									System.out.println("Id venda: " + i.getId() +
+											"\nId do cliente: " + i.getIdCliente() +
+											"\nId do produto: " + i.getIdProduto() +
+											"\nEndereco de envio: " + i.getEnderecoEnvio() +
+											"\nTipo de pagamento: " + i.getTipoPagamento() +
+											"\nStatus de envio: " + i.getFoiEnviado());
+									System.out.println("-----------------");
 								}
 								System.out.print("Id da venda para mudança do status de envio: ");
 								int idVenda = Integer.parseInt(sc.nextLine());
@@ -304,7 +318,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 							else {
 								System.out.println("opcao invalida.");
 							}
-						} while(opcaoMenuVendedor != 6);
+						} while(opcaoMenuVendedor != 7);
 					}
 					else {
 						System.out.println("Nao logou");
