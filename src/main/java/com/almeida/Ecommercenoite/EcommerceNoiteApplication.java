@@ -16,14 +16,12 @@ import com.almeida.Ecommercenoite.services.CategoriaService;
 import com.almeida.Ecommercenoite.services.ProdutoService;
 import com.almeida.Ecommercenoite.services.UsuarioService;
 import com.almeida.Ecommercenoite.services.VendaService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class EcommerceNoiteApplication implements CommandLineRunner {
@@ -47,9 +45,6 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		Scanner sc = new Scanner(System.in);
-		Scanner sc1 = new Scanner(System.in);
-		Scanner sc2 = new Scanner(System.in);
-		Scanner sc3 = new Scanner(System.in);
 
 		int opcaoMenu;
 
@@ -203,7 +198,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 								for (CategoriaModel i : categorias) {
 									if (i.getId() == idCategoria) {
 										System.out.print("Nome do produto: ");
-										String nomeProduto = sc2.nextLine();
+										String nomeProduto = sc.nextLine();
 										System.out.print("Preco do produto: ");
 										Double precoProduto = Double.parseDouble(sc.nextLine());
 										try {
@@ -398,9 +393,9 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 //----------------------------------------------------LOGIN CLIENTE-----------------------------------------------------
 				else if (opcaoLogin == 3) {
 					System.out.print("Username: ");
-					username = sc3.nextLine();
+					username = sc.nextLine();
 					System.out.print("Password: ");
-					password = sc3.nextLine();
+					password = sc.nextLine();
 					isLoggedIn = login(UserTypeEnum.Cliente, username, password);
 
 					if (isLoggedIn) {
