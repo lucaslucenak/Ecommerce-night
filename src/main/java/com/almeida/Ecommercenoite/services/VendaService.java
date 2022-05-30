@@ -20,6 +20,10 @@ public class VendaService {
     @Autowired
     public VendaRepository vendaRepository;
 
+    public VendaModel updateVenda(VendaModel vendaModel) {
+        return vendaRepository.save(vendaModel);
+    }
+
     public VendaModel createVenda(VendaModel vendaModel) {
         return vendaRepository.save(vendaModel);
     }

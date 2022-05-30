@@ -182,7 +182,8 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 									"\n2. Pesquisar produto" +
 									"\n3. Atualizar produto" +
 									"\n4. Excluir produto" +
-									"\n5. Logout");
+									"\n5. Editar Statud de envio de uma venda" +
+									"\n6. Logout");
 							System.out.print("Opcao: ");
 							opcaoMenuVendedor = Integer.parseInt(sc.nextLine());
 
@@ -266,10 +267,44 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 									}
 								}
 							}
+							else if (opcaoMenuVendedor == 5) {
+								List<VendaModel> vendas = vendaService.getAllVendas();
+								for (VendaModel i : vendas) {
+									System.out.println("Id venda: " + i.getId() +
+											"\nId do cliente: " + i.getIdCliente() +
+											"\nId do produto: " + i.getIdProduto() +
+											"\nEndereco de envio: " + i.getEnderecoEnvio() +
+											"\nTipo de pagamento: " + i.getTipoPagamento() +
+											"\nStatus de envio: " + i.getFoiEnviado());
+								}
+								System.out.print("Id da venda para mudança do status de envio: ");
+								int idVenda = Integer.parseInt(sc.nextLine());
+								for (VendaModel i : vendas) {
+									if (i.getId() == idVenda) {
+										System.out.println("1. Enviado" +
+												"\n2. Não enviado");
+										System.out.print("Status: ");
+										int statusVenda = Integer.parseInt(sc.nextLine());
+
+										if (statusVenda == 1) {
+											i.setFoiEnviado(true);
+											vendaService.updateVenda(i);
+										}
+										else if (statusVenda == 2) {
+											i.setFoiEnviado(false);
+											vendaService.updateVenda(i);
+										}
+										else {
+											System.out.println("Opcao invalida");
+										}
+									}
+								}
+
+							}
 							else {
 								System.out.println("opcao invalida.");
 							}
-						} while(opcaoMenuVendedor != 5);
+						} while(opcaoMenuVendedor != 6);
 					}
 					else {
 						System.out.println("Nao logou");
