@@ -312,25 +312,25 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 										for (ProdutoModel i : produtos) {
 											System.out.println("Produtos: ");
 											System.out.println(i.getId() + ". " + i.getNome() + " R$" + i.getPreco());
-											System.out.println("Deseja adicionar algum produto? ");
-											System.out.println("1. Sim" +
-													"\n2. Não");
-											int adicionarProduto = sc2.nextInt();
-											if (adicionarProduto == 1 ) {
-												System.out.print("Id do produto: ");
-												Long idProdutoAdicionar = sc2.nextLong();
-												for (ProdutoModel j : produtos) {
-													if (j.getId() == idProdutoAdicionar) {
-														carrinhoDeCompras.addProduto(j);
-													}
+										}
+										System.out.println("Deseja adicionar algum produto? ");
+										System.out.println("1. Sim" +
+												"\n2. Não");
+										int adicionarProduto = sc2.nextInt();
+										if (adicionarProduto == 1 ) {
+											System.out.print("Id do produto: ");
+											Long idProdutoAdicionar = sc2.nextLong();
+											for (ProdutoModel j : produtos) {
+												if (j.getId() == idProdutoAdicionar) {
+													carrinhoDeCompras.addProduto(j);
 												}
 											}
-											else if (adicionarProduto == 2) {
-
-											}
-											else {
-												System.out.println("Opcao invalida");
-											}
+										}
+										else if (adicionarProduto == 2) {
+											System.out.println("Voltando ao menu");
+										}
+										else {
+											System.out.println("Opcao invalida");
 										}
 									}
 									else if (opcaoCompras == 2) {
