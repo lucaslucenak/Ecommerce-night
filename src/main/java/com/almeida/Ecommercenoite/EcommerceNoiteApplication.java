@@ -348,22 +348,22 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 										String enderecoEnvio = sc.nextLine();
 										for (ProdutoModel i : carrinhoDeCompras.getProdutos()) {
 											if (metodoPagamento == 1) {
-												vendaService.createVenda(new VendaModel(
+												vendaService.createVenda(new VendaModel( carrinhoDeCompras.getId(),
 														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), TipoPagamentoEnum.BOLETO, enderecoEnvio
 												));
 											}
 											else if (metodoPagamento == 2) {
-												vendaService.createVenda(new VendaModel(
+												vendaService.createVenda(new VendaModel( carrinhoDeCompras.getId(),
 														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), TipoPagamentoEnum.DEBITO, enderecoEnvio
 												));
 											}
 											else if (metodoPagamento == 3) {
-												vendaService.createVenda(new VendaModel(
+												vendaService.createVenda(new VendaModel( carrinhoDeCompras.getId(),
 														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), TipoPagamentoEnum.CREDITO, enderecoEnvio
 												));
 											}
 											else if (metodoPagamento == 4) {
-												vendaService.createVenda(new VendaModel(
+												vendaService.createVenda(new VendaModel( carrinhoDeCompras.getId(),
 														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), TipoPagamentoEnum.PIX, enderecoEnvio
 												));
 											}
@@ -388,7 +388,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 							else {
 								System.out.println("Opcao invalida.");
 							}
-						} while (opcaoMenuCliente != 2);
+						} while (opcaoMenuCliente != 3);
 					}
 					else {
 						System.out.println("Nao logou");

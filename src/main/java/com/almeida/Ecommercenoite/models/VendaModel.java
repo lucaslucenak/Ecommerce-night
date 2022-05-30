@@ -16,18 +16,19 @@ import javax.persistence.*;
 @Table(name = "tb_vendas")
 public class VendaModel {
 
-    public VendaModel(Long idCliente, Long idProduto, TipoPagamentoEnum tipoPagamento, String enderecoEnvio) {
+    public VendaModel(Long idCarrinho, Long idCliente, Long idProduto, TipoPagamentoEnum tipoPagamento, String enderecoEnvio) {
+        this.idCarrinho = idCarrinho;
         this.idCliente = idCliente;
         this.idProduto = idProduto;
         this.tipoPagamento = tipoPagamento;
         this.enderecoEnvio = enderecoEnvio;
+        this.foiEnviado = false;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idCarrinho")
     private Long idCarrinho;
 
@@ -44,5 +45,5 @@ public class VendaModel {
     private String enderecoEnvio;
 
     @Column(name = "foiEnviado")
-    private Boolean foiEnviado = false;
+    private Boolean foiEnviado;
 }
