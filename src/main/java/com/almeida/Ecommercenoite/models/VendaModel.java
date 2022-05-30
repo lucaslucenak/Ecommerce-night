@@ -16,12 +16,16 @@ import javax.persistence.*;
 @Table(name = "tb_vendas")
 public class VendaModel {
 
+    public VendaModel(Long idCliente, Long idProduto, TipoPagamentoEnum tipoPagamento, String enderecoEnvio) {
+        this.idCliente = idCliente;
+        this.idProduto = idProduto;
+        this.tipoPagamento = tipoPagamento;
+        this.enderecoEnvio = enderecoEnvio;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @Column(name = "idVendedor")
-    private Long idVendedor;
 
     @Column(name = "idCliente")
     private Long idCliente;
@@ -32,23 +36,8 @@ public class VendaModel {
     @Column(name = "tipoPagamento")
     private TipoPagamentoEnum tipoPagamento;
 
-    @Column(name = "numeroEnderecoEnvio")
-    private String numeroEnderecoEnvio;
-
-    @Column(name = "ruaEnderecoEnvio")
-    private String ruaEnderecoEnvio;
-
-    @Column(name = "bairroEnderecoEnvio")
-    private String bairroEnderecoEnvio;
-
-    @Column(name = "cidadeEnderecoEnvio")
-    private String cidadeEnderecoEnvio;
-
-    @Column(name = "estadoEnderecoEnvio")
-    private String estadoEnderecoEnvio;
-
-    @Column(name = "cepEnderecoEnvio")
-    private String cepEnderecoEnvio;
+    @Column(name = "enderecoEnvio")
+    private String enderecoEnvio;
 
     @Column(name = "foiEnviado")
     private Boolean foiEnviado = false;

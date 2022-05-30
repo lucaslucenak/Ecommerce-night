@@ -1,16 +1,19 @@
 package com.almeida.Ecommercenoite;
 
 import com.almeida.Ecommercenoite.entities.CarrinhoDeCompras;
+import com.almeida.Ecommercenoite.enums.TipoPagamentoEnum;
 import com.almeida.Ecommercenoite.enums.UserTypeEnum;
 import com.almeida.Ecommercenoite.exceptions.ProdutoAlreadyExistsException;
 import com.almeida.Ecommercenoite.exceptions.UsernameTakenException;
 import com.almeida.Ecommercenoite.models.CategoriaModel;
 import com.almeida.Ecommercenoite.models.ProdutoModel;
 import com.almeida.Ecommercenoite.models.UsuarioModel;
+import com.almeida.Ecommercenoite.models.VendaModel;
 import com.almeida.Ecommercenoite.repositories.ProdutoCustomRepository;
 import com.almeida.Ecommercenoite.services.CategoriaService;
 import com.almeida.Ecommercenoite.services.ProdutoService;
 import com.almeida.Ecommercenoite.services.UsuarioService;
+import com.almeida.Ecommercenoite.services.VendaService;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -34,6 +37,8 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 	private ProdutoService produtoService;
 	@Autowired
 	private ProdutoCustomRepository produtoCustomRepository;
+	@Autowired
+	private VendaService vendaService;
 
 
 	public static void main(String[] args) {
@@ -45,6 +50,8 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 		Scanner sc = new Scanner(System.in);
 		Scanner sc1 = new Scanner(System.in);
 		Scanner sc2 = new Scanner(System.in);
+		Scanner sc3 = new Scanner(System.in);
+
 		int opcaoMenu;
 
 		do {
@@ -70,8 +77,10 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 
 //-------------------------------------------------LOGIN ADMINISTRADOR--------------------------------------------------
 				if (opcaoLogin == 1) { // OK
+					clearBuffer(sc);
 					System.out.print("Username: ");
-					username = sc1.nextLine();
+					username = sc.nextLine();
+					clearBuffer(sc);
 					System.out.print("Password: ");
 					password = sc1.nextLine();
 					isLoggedIn = login(UserTypeEnum.Administrador, username, password);
@@ -84,11 +93,12 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 									"\n3. Atualizar categoria" +
 									"\n4. Excluir categoria" +
 									"\n5. Logout");
+							clearBuffer(sc);
 							opcaoMenuAdm = sc.nextInt();
 
 							if (opcaoMenuAdm == 1) { // OK
 								System.out.print("Nome da nova categoria: ");
-								String nomeCadastro = sc.nextLine();
+								String nomeCadastro = sc2.nextLine();
 								try {
 									categoriaService.createCategoria(new CategoriaModel(nomeCadastro.toUpperCase(Locale.ROOT)));
 
@@ -165,9 +175,9 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 //----------------------------------------------------LOGIN VENDEDOR----------------------------------------------------
 				else if (opcaoLogin == 2) {
 					System.out.print("Username: ");
-					username = sc1.nextLine();
+					username = sc3.nextLine();
 					System.out.print("Password: ");
-					password = sc1.nextLine();
+					password = sc3.nextLine();
 					isLoggedIn = login(UserTypeEnum.Vendedor, username, password);
 
 					if (isLoggedIn) {
@@ -275,9 +285,9 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 //----------------------------------------------------LOGIN CLIENTE-----------------------------------------------------
 				else if (opcaoLogin == 3) {
 					System.out.print("Username: ");
-					username = sc1.nextLine();
+					username = sc3.nextLine();
 					System.out.print("Password: ");
-					password = sc1.nextLine();
+					password = sc3.nextLine();
 					isLoggedIn = login(UserTypeEnum.Cliente, username, password);
 
 					if (isLoggedIn) {
@@ -329,14 +339,40 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 										}
 									}
 									else if (opcaoCompras == 3) {
+										System.out.println("Metodos de pagamento: ");
+										System.out.println("1. Boleto" +
+												"\n2. Débito" +
+												"\n3. Crédito" +
+												"\n4. Pix");
+										System.out.print("Metodo de pagamento:");
+										int metodoPagamento = sc3.nextInt();
+										System.out.println("Endereco de envio: ");
+										String enderecoEnvio = sc.nextLine();
+										for (ProdutoModel i : carrinhoDeCompras.getProdutos()) {
+											if (metodoPagamento == 1) {
+												vendaService.createVenda(new VendaModel(
+														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), TipoPagamentoEnum.BOLETO, enderecoEnvio
+												));
+											}
+											else if (metodoPagamento == 2) {
 
+											}
+											else if (metodoPagamento == 3) {
+
+											}
+											else if (metodoPagamento == 4) {
+
+											}
+											else {
+												System.out.println("Opcao invalida.");
+											}
+										}
+										System.out.println("Compas finalizadas, voltando ao menu...");
 									}
 									else {
-										System.out.println("Voltando ao menu.");
+										System.out.println("Opcao invalida.");
 									}
 								} while (opcaoCompras != 3);
-
-
 
 							}
 							else if (opcaoMenuCliente == 2) {
@@ -433,6 +469,12 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 		}
 		else {
 			return false;
+		}
+	}
+
+	private static void clearBuffer(Scanner scanner) {
+		if (scanner.hasNextLine()) {
+			scanner.nextLine();
 		}
 	}
 
