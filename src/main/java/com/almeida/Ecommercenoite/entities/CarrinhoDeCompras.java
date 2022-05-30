@@ -7,6 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CarrinhoDeCompras {
-    private UsuarioModel usuario;
     private List<ProdutoModel> produtos = new ArrayList<ProdutoModel>();
+
+    public void addProduto(ProdutoModel produto) {
+        this.produtos.add(produto);
+    }
+
+    public List<ProdutoModel> getProdutos() {
+        return produtos;
+    }
 }

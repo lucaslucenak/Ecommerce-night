@@ -49,7 +49,8 @@ public class ProdutoService {
         return produtoRepository.findProdutoByNomeContains(nome.toUpperCase(Locale.ROOT));
     }
 
-    public List<ProdutoModel> findProdutoByIdCategoria(String categoria) {
-        return produtoRepository.findProdutoByIdCategoriaContains(categoria);
+    public List<ProdutoModel> findProdutoByIdCategoria(Long idCategoria) {
+        return produtoRepository.findProdutoByIdCategoriaContains(idCategoria);
     }
+
 }

@@ -1,11 +1,13 @@
 package com.almeida.Ecommercenoite;
 
+import com.almeida.Ecommercenoite.entities.CarrinhoDeCompras;
 import com.almeida.Ecommercenoite.enums.UserTypeEnum;
 import com.almeida.Ecommercenoite.exceptions.ProdutoAlreadyExistsException;
 import com.almeida.Ecommercenoite.exceptions.UsernameTakenException;
 import com.almeida.Ecommercenoite.models.CategoriaModel;
 import com.almeida.Ecommercenoite.models.ProdutoModel;
 import com.almeida.Ecommercenoite.models.UsuarioModel;
+import com.almeida.Ecommercenoite.repositories.ProdutoCustomRepository;
 import com.almeida.Ecommercenoite.services.CategoriaService;
 import com.almeida.Ecommercenoite.services.ProdutoService;
 import com.almeida.Ecommercenoite.services.UsuarioService;
@@ -30,6 +32,8 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 	private UsuarioService usuarioService;
 	@Autowired
 	private ProdutoService produtoService;
+	@Autowired
+	private ProdutoCustomRepository produtoCustomRepository;
 
 
 	public static void main(String[] args) {
@@ -278,6 +282,73 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 
 					if (isLoggedIn) {
 						System.out.println("LOGOU LOGOU cliente");
+						int opcaoMenuCliente = 0;
+						CarrinhoDeCompras carrinhoDeCompras = new CarrinhoDeCompras();
+						do {
+							System.out.println("1. Navegar no Ecommerce" +
+									"\n2. Logout");
+							System.out.print("Opcao: ");
+							opcaoMenuCliente = sc2.nextInt();
+							if (opcaoMenuCliente == 1) {
+								int opcaoCompras = 0;
+								do {
+									System.out.println("1. Adicionar produto" +
+											"\n2. Visualizar carrinho" +
+											"\n3. Encerrar compras");
+									System.out.print("Opcao: ");
+									opcaoCompras = sc2.nextInt();
+									if (opcaoCompras == 1) {
+										List<ProdutoModel> produtos = produtoService.getAllProdutos();
+										for (ProdutoModel i : produtos) {
+											System.out.println("Produtos: ");
+											System.out.println(i.getId() + ". " + i.getNome() + " R$" + i.getPreco());
+											System.out.println("Deseja adicionar algum produto? ");
+											System.out.println("1. Sim" +
+													"\n2. Não");
+											int adicionarProduto = sc2.nextInt();
+											if (adicionarProduto == 1 ) {
+												System.out.print("Id do produto: ");
+												Long idProdutoAdicionar = sc2.nextLong();
+												for (ProdutoModel j : produtos) {
+													if (j.getId() == idProdutoAdicionar) {
+														carrinhoDeCompras.addProduto(j);
+													}
+												}
+											}
+											else if (adicionarProduto == 2) {
+
+											}
+											else {
+												System.out.println("Opcao invalida");
+											}
+										}
+									}
+									else if (opcaoCompras == 2) {
+										for (ProdutoModel i : carrinhoDeCompras.getProdutos()) {
+											System.out.println(i.getNome() + " R$" + i.getPreco());
+										}
+									}
+									else if (opcaoCompras == 3) {
+
+									}
+									else {
+										System.out.println("Voltando ao menu.");
+									}
+								} while (opcaoCompras != 3);
+
+
+
+							}
+							else if (opcaoMenuCliente == 2) {
+								System.out.println("Logout.");
+							}
+							else if (opcaoMenuCliente == 3) {
+
+							}
+							else {
+								System.out.println("Opcao invalida.");
+							}
+						} while (opcaoMenuCliente != 2);
 					}
 					else {
 						System.out.println("Nao logou");
@@ -316,7 +387,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 					System.out.print("Username para cadastro: ");
 					username = sc1.nextLine();
 					System.out.print("Password para cadastro: ");
-					password = sc.nextLine();
+					password = sc2.nextLine();
 					try {
 						usuarioService.createUsuario(new UsuarioModel(UserTypeEnum.Cliente, username, password));
 						System.out.println("Usuario cliente cadastrado com sucesso.");
