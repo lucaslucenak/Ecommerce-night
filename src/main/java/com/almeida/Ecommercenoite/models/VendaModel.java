@@ -27,6 +27,10 @@ public class VendaModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "idCarrinho")
+    private Long idCarrinho;
+
     @Column(name = "idCliente")
     private Long idCliente;
 

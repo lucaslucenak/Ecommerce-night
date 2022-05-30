@@ -296,6 +296,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 						CarrinhoDeCompras carrinhoDeCompras = new CarrinhoDeCompras();
 						do {
 							System.out.println("1. Navegar no Ecommerce" +
+									"\n2. Visualizar compras" +
 									"\n2. Logout");
 							System.out.print("Opcao: ");
 							opcaoMenuCliente = sc2.nextInt();
@@ -355,13 +356,19 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 												));
 											}
 											else if (metodoPagamento == 2) {
-
+												vendaService.createVenda(new VendaModel(
+														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), TipoPagamentoEnum.DEBITO, enderecoEnvio
+												));
 											}
 											else if (metodoPagamento == 3) {
-
+												vendaService.createVenda(new VendaModel(
+														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), TipoPagamentoEnum.CREDITO, enderecoEnvio
+												));
 											}
 											else if (metodoPagamento == 4) {
-
+												vendaService.createVenda(new VendaModel(
+														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), TipoPagamentoEnum.PIX, enderecoEnvio
+												));
 											}
 											else {
 												System.out.println("Opcao invalida.");
