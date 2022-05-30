@@ -183,8 +183,9 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 									"\n3. Atualizar produto" +
 									"\n4. Excluir produto" +
 									"\n5. Listar vendas" +
-									"\n6. Editar Statud de envio de uma venda" +
-									"\n7. Logout");
+									"\n6. Editar Status de envio de uma venda" +
+									"\n7. Relatorios de venda" +
+									"\n8. Logout");
 							System.out.print("Opcao: ");
 							opcaoMenuVendedor = Integer.parseInt(sc.nextLine());
 
@@ -276,6 +277,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 											"\nId do produto: " + i.getIdProduto() +
 											"\nEndereco de envio: " + i.getEnderecoEnvio() +
 											"\nTipo de pagamento: " + i.getTipoPagamento() +
+											"\n Valor da venda: " + i.getValorVenda() +
 											"\nStatus de envio: " + i.getFoiEnviado());
 									System.out.println("-----------------");
 								}
@@ -288,6 +290,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 											"\nId do produto: " + i.getIdProduto() +
 											"\nEndereco de envio: " + i.getEnderecoEnvio() +
 											"\nTipo de pagamento: " + i.getTipoPagamento() +
+											"\n Valor da venda: " + i.getValorVenda() +
 											"\nStatus de envio: " + i.getFoiEnviado());
 									System.out.println("-----------------");
 								}
@@ -315,10 +318,43 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 								}
 
 							}
+							else if (opcaoMenuVendedor == 7) {
+								System.out.println("1. Valor total já vendido em todo o período" +
+										"\n2. Valor total já vendido por categoria" +
+										"\n3. Valor total já vendido por produto");
+								System.out.print("Opcao: ");
+								int opcaoRelatorio = Integer.parseInt(sc.nextLine());
+								if (opcaoRelatorio == 1) {
+									Double totalVendas = 0.0;
+									for (VendaModel i : vendaService.getAllVendas()) {
+										totalVendas += i.getValorVenda();
+									}
+									System.out.println("Valor total de vendas: " + totalVendas);
+
+								}
+								else if (opcaoRelatorio == 2) {
+									for (CategoriaModel i : categoriaService.getAllCategorias()) {
+										System.out.println(i.getId() + ". " + i.getNome());
+									}
+									System.out.print("Id da categoria para análise: ");
+									int idCategoria = Integer.parseInt(sc.nextLine());
+									Double totalVendas = 0.0;
+									for (VendaModel i : vendaService.getAllVendas()) {
+										if (i.getIdCategoria() == idCategoria) {
+											totalVendas += i.getValorVenda();
+										}
+									}
+									System.out.println("Total de vendas da categoria selecionada: " + totalVendas);
+
+								}
+								else if (opcaoRelatorio == 3) {
+
+								}
+							}
 							else {
 								System.out.println("opcao invalida.");
 							}
-						} while(opcaoMenuVendedor != 7);
+						} while(opcaoMenuVendedor != 8);
 					}
 					else {
 						System.out.println("Nao logou");
@@ -395,22 +431,22 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 										for (ProdutoModel i : carrinhoDeCompras.getProdutos()) {
 											if (metodoPagamento == 1) {
 												vendaService.createVenda(new VendaModel(
-														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), TipoPagamentoEnum.BOLETO, enderecoEnvio
+														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), i.getIdCategoria(), TipoPagamentoEnum.BOLETO, enderecoEnvio, i.getPreco()
 												));
 											}
 											else if (metodoPagamento == 2) {
 												vendaService.createVenda(new VendaModel(
-														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), TipoPagamentoEnum.DEBITO, enderecoEnvio
+														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), i.getIdCategoria(), TipoPagamentoEnum.DEBITO, enderecoEnvio, i.getPreco()
 												));
 											}
 											else if (metodoPagamento == 3) {
 												vendaService.createVenda(new VendaModel(
-														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), TipoPagamentoEnum.CREDITO, enderecoEnvio
+														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), i.getIdCategoria(), TipoPagamentoEnum.CREDITO, enderecoEnvio, i.getPreco()
 												));
 											}
 											else if (metodoPagamento == 4) {
 												vendaService.createVenda(new VendaModel(
-														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), TipoPagamentoEnum.PIX, enderecoEnvio
+														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), i.getIdCategoria(), TipoPagamentoEnum.PIX, enderecoEnvio, i.getPreco()
 												));
 											}
 											else {

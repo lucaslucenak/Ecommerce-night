@@ -16,11 +16,13 @@ import javax.persistence.*;
 @Table(name = "tb_vendas")
 public class VendaModel {
 
-    public VendaModel(Long idCliente, Long idProduto, TipoPagamentoEnum tipoPagamento, String enderecoEnvio) {
+    public VendaModel(Long idCliente, Long idProduto, Long idCategoria, TipoPagamentoEnum tipoPagamento, String enderecoEnvio, Double valorVenda) {
         this.idCliente = idCliente;
         this.idProduto = idProduto;
+        this.idCategoria = idCategoria;
         this.tipoPagamento = tipoPagamento;
         this.enderecoEnvio = enderecoEnvio;
+        this.valorVenda = valorVenda;
         this.foiEnviado = false;
     }
 
@@ -34,11 +36,17 @@ public class VendaModel {
     @Column(name = "idProduto")
     private Long idProduto;
 
+    @Column(name = "idCategoria")
+    private Long idCategoria;
+
     @Column(name = "tipoPagamento")
     private TipoPagamentoEnum tipoPagamento;
 
     @Column(name = "enderecoEnvio")
     private String enderecoEnvio;
+
+    @Column(name = "valorVenda")
+    private Double valorVenda;
 
     @Column(name = "foiEnviado")
     private Boolean foiEnviado;
