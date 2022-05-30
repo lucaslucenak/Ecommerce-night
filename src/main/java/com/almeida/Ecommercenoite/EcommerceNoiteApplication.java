@@ -62,9 +62,9 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 				System.out.println("1. Login como Administrador" +
 						"\n2. Login como Vendedor" +
 						"\n3. Login como Cliente");
-				String username = "";
-				String password = "";
-				Boolean isLoggedIn = false;
+				String username;
+				String password;
+				Boolean isLoggedIn;
 
 				System.out.print("Opcao: ");
 				opcaoLogin = Integer.parseInt(sc.nextLine());
@@ -172,8 +172,8 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 					isLoggedIn = login(UserTypeEnum.Vendedor, username, password);
 
 					if (isLoggedIn) {
-						System.out.println("LOGOU LOGOU vendedor");
-						int opcaoMenuVendedor = 0;
+						System.out.println("Login realizado com sucesso");
+						int opcaoMenuVendedor;
 						do {
 							System.out.println("1. Criar novo produto" +
 									"\n2. Pesquisar produto" +
@@ -400,7 +400,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 
 					if (isLoggedIn) {
 						System.out.println("LOGOU LOGOU cliente");
-						int opcaoMenuCliente = 0;
+						int opcaoMenuCliente;
 						CarrinhoDeCompras carrinhoDeCompras = new CarrinhoDeCompras();
 						do {
 							System.out.println("1. Navegar no Ecommerce" +
@@ -409,7 +409,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 							System.out.print("Opcao: ");
 							opcaoMenuCliente = Integer.parseInt(sc.nextLine());
 							if (opcaoMenuCliente == 1) {
-								int opcaoCompras = 0;
+								int opcaoCompras;
 								do {
 									System.out.println("1. Adicionar produto" +
 											"\n2. Visualizar carrinho" +
@@ -522,8 +522,8 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 			else if (opcaoMenu == 2) {
 				System.out.println("1. Cadastro de Vendedor" +
 						"\n2. Cadastro de Cliente");
-				String username = "";
-				String password = "";
+				String username;
+				String password;
 				System.out.print("Opcao: ");
 				int opcaoMenuCadastro = Integer.parseInt(sc.nextLine());
 
@@ -571,13 +571,6 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 			}
 
 		} while (true);
-
-//		categoriaService.createCategoria(new CategoriaModel("Games"));
-//		List<CategoriaModel> categorias = categoriaService.findCategoriaByNome("games");
-//
-//		for (CategoriaModel categoriaModel: categorias) {
-//			System.out.println(categoriaModel.getNome());
-//		}
 	}
 
 	public Boolean login(UserTypeEnum userType, String username, String password) {
@@ -594,12 +587,4 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 			return false;
 		}
 	}
-
-	private static void clearBuffer(Scanner scanner) {
-		if (scanner.hasNextLine()) {
-			scanner.nextLine();
-		}
-	}
-
-
 }
