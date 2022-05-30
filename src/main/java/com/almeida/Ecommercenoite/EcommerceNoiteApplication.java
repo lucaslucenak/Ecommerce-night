@@ -1,6 +1,7 @@
 package com.almeida.Ecommercenoite;
 
 import com.almeida.Ecommercenoite.entities.CarrinhoDeCompras;
+import com.almeida.Ecommercenoite.entities.TotalVendasCategoria;
 import com.almeida.Ecommercenoite.enums.TipoPagamentoEnum;
 import com.almeida.Ecommercenoite.enums.UserTypeEnum;
 import com.almeida.Ecommercenoite.exceptions.ProdutoAlreadyExistsException;
@@ -333,29 +334,27 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 
 								}
 								else if (opcaoRelatorio == 2) {
-//									for (CategoriaModel i : categoriaService.getAllCategorias()) {
-//										System.out.println(i.getId() + ". " + i.getNome());
-//									}
-//									System.out.print("Id da categoria para análise: ");
-//									int idCategoria = Integer.parseInt(sc.nextLine());
-									Double totalVendasCategoria = 0.0;
-									Double totalVendas = 0.0;
-									List<CategoriaModel> categorias = categoriaService.getAllCategorias();
 									Set<Long> idsCategorias = new HashSet<>();
+									List<TotalVendasCategoria> totalVendasCategorias = new ArrayList<>();
 									for (VendaModel i : vendaService.getAllVendas()) {
 										idsCategorias.add(i.getIdCategoria());
 									}
 									for (Long i : idsCategorias) {
-										System.out.println(i);
+										totalVendasCategorias.add(new TotalVendasCategoria(i));
 									}
-//									for (VendaModel i : vendaService.getAllVendas()) {
-//										totalVendas += i.getValorVenda();
-//										if (i.getIdCategoria() == idCategoria) {
-//											totalVendasCategoria += i.getValorVenda();
-//										}
-//									}
-//									System.out.println("Total de vendas da categoria selecionada: R$" + totalVendasCategoria);
-
+									for (VendaModel i : vendaService.getAllVendas()) {
+										for (TotalVendasCategoria j : totalVendasCategorias) {
+											if (i.getIdCategoria().equals(j.getIdCategoria())) {
+												j.incrementTotalVendas(i.getValorVenda());
+												Optional<CategoriaModel> categoriaOptional = categoriaService.getCategoriaById(i.getIdCategoria());
+												CategoriaModel categoria = categoriaOptional.get();
+												j.setNomeCategoria(categoria.getNome());
+											}
+										}
+									}
+									for (TotalVendasCategoria i : totalVendasCategorias) {
+										System.out.println(i.getNomeCategoria() + " - R$" + i.getTotalVendas());
+									}
 								}
 								else if (opcaoRelatorio == 3) {
 
