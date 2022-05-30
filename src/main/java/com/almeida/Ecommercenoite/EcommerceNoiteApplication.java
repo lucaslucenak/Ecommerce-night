@@ -329,22 +329,32 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 									for (VendaModel i : vendaService.getAllVendas()) {
 										totalVendas += i.getValorVenda();
 									}
-									System.out.println("Valor total de vendas: " + totalVendas);
+									System.out.println("Valor total de vendas: R$" + totalVendas);
 
 								}
 								else if (opcaoRelatorio == 2) {
-									for (CategoriaModel i : categoriaService.getAllCategorias()) {
-										System.out.println(i.getId() + ". " + i.getNome());
-									}
-									System.out.print("Id da categoria para análise: ");
-									int idCategoria = Integer.parseInt(sc.nextLine());
+//									for (CategoriaModel i : categoriaService.getAllCategorias()) {
+//										System.out.println(i.getId() + ". " + i.getNome());
+//									}
+//									System.out.print("Id da categoria para análise: ");
+//									int idCategoria = Integer.parseInt(sc.nextLine());
+									Double totalVendasCategoria = 0.0;
 									Double totalVendas = 0.0;
+									List<CategoriaModel> categorias = categoriaService.getAllCategorias();
+									Set<Long> idsCategorias = new HashSet<>();
 									for (VendaModel i : vendaService.getAllVendas()) {
-										if (i.getIdCategoria() == idCategoria) {
-											totalVendas += i.getValorVenda();
-										}
+										idsCategorias.add(i.getIdCategoria());
 									}
-									System.out.println("Total de vendas da categoria selecionada: " + totalVendas);
+									for (Long i : idsCategorias) {
+										System.out.println(i);
+									}
+//									for (VendaModel i : vendaService.getAllVendas()) {
+//										totalVendas += i.getValorVenda();
+//										if (i.getIdCategoria() == idCategoria) {
+//											totalVendasCategoria += i.getValorVenda();
+//										}
+//									}
+//									System.out.println("Total de vendas da categoria selecionada: R$" + totalVendasCategoria);
 
 								}
 								else if (opcaoRelatorio == 3) {
