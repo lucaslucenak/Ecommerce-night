@@ -2,6 +2,7 @@ package com.almeida.Ecommercenoite;
 
 import com.almeida.Ecommercenoite.entities.CarrinhoDeCompras;
 import com.almeida.Ecommercenoite.entities.TotalVendasCategoria;
+import com.almeida.Ecommercenoite.entities.TotalVendasProdutos;
 import com.almeida.Ecommercenoite.enums.TipoPagamentoEnum;
 import com.almeida.Ecommercenoite.enums.UserTypeEnum;
 import com.almeida.Ecommercenoite.exceptions.ProdutoAlreadyExistsException;
@@ -357,7 +358,28 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 									}
 								}
 								else if (opcaoRelatorio == 3) {
-
+									Set<Long> idsProdutos = new HashSet<>();
+									List<TotalVendasProdutos> totalVendasProdutos = new ArrayList<>();
+									for (VendaModel i : vendaService.getAllVendas()) {
+										idsProdutos.add(i.getIdProduto());
+									}
+									System.out.println("-----");
+									for (Long i : idsProdutos) {
+										totalVendasProdutos.add(new TotalVendasProdutos(i));
+									}
+									for (VendaModel i : vendaService.getAllVendas()) {
+										for (TotalVendasProdutos j : totalVendasProdutos) {
+											if (i.getIdProduto().equals(j.getIdProduto())) {
+												j.incrementTotalVendas(i.getValorVenda());
+												Optional<ProdutoModel> produtoOptional = produtoService.getProdutoById(i.getIdProduto());
+												ProdutoModel produto = produtoOptional.get();
+												j.setNomeProduto(produto.getNome());
+											}
+										}
+									}
+									for (TotalVendasProdutos i : totalVendasProdutos) {
+										System.out.println(i.getNomeProduto() + " - R$" + i.getTotalVendas());
+									}
 								}
 							}
 							else {
