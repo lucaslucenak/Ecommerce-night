@@ -1,5 +1,6 @@
 package com.almeida.Ecommercenoite.services;
 
+import com.almeida.Ecommercenoite.exceptions.CategoriaAlreadyExistsException;
 import com.almeida.Ecommercenoite.exceptions.UsernameTakenException;
 import com.almeida.Ecommercenoite.models.CategoriaModel;
 import com.almeida.Ecommercenoite.repositories.CategoriaRepository;
@@ -28,7 +29,7 @@ public class CategoriaService {
 
     public CategoriaModel createCategoria(CategoriaModel categoriaModel) {
         if (findCategoriaByNome(categoriaModel.getNome()).size() != 0) {
-            throw new UsernameTakenException("Categoria ja cadastrada!");
+            throw new CategoriaAlreadyExistsException("Categoria ja cadastrada!");
         }
         return categoriaRepository.save(categoriaModel);
     }

@@ -1,5 +1,7 @@
 package com.almeida.Ecommercenoite.services;
 
+import com.almeida.Ecommercenoite.exceptions.CategoriaAlreadyExistsException;
+import com.almeida.Ecommercenoite.exceptions.ProdutoAlreadyExistsException;
 import com.almeida.Ecommercenoite.models.CategoriaModel;
 import com.almeida.Ecommercenoite.models.ProdutoModel;
 import com.almeida.Ecommercenoite.repositories.CategoriaRepository;
@@ -25,6 +27,9 @@ public class ProdutoService {
     }
 
     public ProdutoModel createProduto(ProdutoModel produtoModel) {
+        if (findProdutoByNome(produtoModel.getNome()).size() != 0) {
+            throw new ProdutoAlreadyExistsException("Produto ja cadastrado!");
+        }
         return produtoRepository.save(produtoModel);
     }
 

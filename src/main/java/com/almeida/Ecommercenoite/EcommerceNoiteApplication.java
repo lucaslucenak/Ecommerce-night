@@ -1,6 +1,7 @@
 package com.almeida.Ecommercenoite;
 
 import com.almeida.Ecommercenoite.enums.UserTypeEnum;
+import com.almeida.Ecommercenoite.exceptions.ProdutoAlreadyExistsException;
 import com.almeida.Ecommercenoite.exceptions.UsernameTakenException;
 import com.almeida.Ecommercenoite.models.CategoriaModel;
 import com.almeida.Ecommercenoite.models.ProdutoModel;
@@ -190,9 +191,13 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 									if (i.getId() == idCategoria) {
 										System.out.print("Nome do produto: ");
 										String nomeProduto = sc2.nextLine();
-										System.out.println("Preco do produto: ");
+										System.out.print("Preco do produto: ");
 										Double precoProduto = sc2.nextDouble();
-										produtoService.createProduto(new ProdutoModel(nomeProduto.toUpperCase(Locale.ROOT), precoProduto, i.getId()));
+										try {
+											produtoService.createProduto(new ProdutoModel(nomeProduto.toUpperCase(Locale.ROOT), precoProduto, i.getId()));
+										} catch (ProdutoAlreadyExistsException e) {
+											System.out.println("Produto ja cadastrado!");
+										}
 									}
 								}
 							}
@@ -223,7 +228,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 									}
 								}
 							}
-							else if (opcaoMenuVendedor == 4) { //OK
+							else if (opcaoMenuVendedor == 4) { // OK
 								List<ProdutoModel> produtosDelete = produtoService.getAllProdutos();
 
 								for (ProdutoModel i : produtosDelete) {
