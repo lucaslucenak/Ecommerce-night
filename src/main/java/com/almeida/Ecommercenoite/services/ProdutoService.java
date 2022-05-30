@@ -20,6 +20,10 @@ public class ProdutoService {
     @Autowired
     public ProdutoRepository produtoRepository;
 
+    public ProdutoModel updateProduto(ProdutoModel produtoModel) {
+        return produtoRepository.save(produtoModel);
+    }
+
     public ProdutoModel createProduto(ProdutoModel produtoModel) {
         return produtoRepository.save(produtoModel);
     }

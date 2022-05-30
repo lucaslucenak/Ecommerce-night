@@ -39,6 +39,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Scanner sc = new Scanner(System.in);
 		Scanner sc1 = new Scanner(System.in);
+		Scanner sc2 = new Scanner(System.in);
 		int opcaoMenu;
 
 		do {
@@ -165,83 +166,97 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 					isLoggedIn = login(UserTypeEnum.Vendedor, username, password);
 
 					if (isLoggedIn) {
-						while(true) {
-							int menuVendedor;
+						System.out.println("LOGOU LOGOU vendedor");
+						int opcaoMenuVendedor = 0;
+						do {
 							System.out.println("1. Criar novo produto" +
 									"\n2. Pesquisar produto" +
 									"\n3. Atualizar produto" +
 									"\n4. Excluir produto" +
 									"\n5. Logout");
 							System.out.print("Opcao: ");
-							menuVendedor = sc.nextInt();
-							if (menuVendedor == 1) { // OK
+							opcaoMenuVendedor = sc.nextInt();
+
+							if (opcaoMenuVendedor == 1) { // OK
 								System.out.println("Categorias:");
 								List<CategoriaModel> categorias = categoriaService.getAllCategorias();
 								for (CategoriaModel i : categorias) {
-									System.out.println(i.getNome());
+									System.out.println(i.getId() + ". " + i.getNome());
 								}
-								System.out.print("Escolha a categoria: ");
-								String categoriaEscolhida = sc1.nextLine();
-								List<CategoriaModel> categoriasEscolhida = categoriaService.findCategoriaByNome(categoriaEscolhida);
-								if (categoriasEscolhida.size() > 0) {
-									System.out.print("Nome do produto: ");
-									String nomeProduto = sc1.nextLine();
-									System.out.println("Preco do produto: ");
-									Double precoProduto = sc.nextDouble();
-									produtoService.createProduto(new ProdutoModel(nomeProduto, precoProduto, categoriasEscolhida.get(0).getId()));
+								System.out.print("Escolha o id da categoria: ");
+								int idCategoria = sc1.nextInt();
+
+								for (CategoriaModel i : categorias) {
+									if (i.getId() == idCategoria) {
+										System.out.print("Nome do produto: ");
+										String nomeProduto = sc2.nextLine();
+										System.out.println("Preco do produto: ");
+										Double precoProduto = sc2.nextDouble();
+										produtoService.createProduto(new ProdutoModel(nomeProduto.toUpperCase(Locale.ROOT), precoProduto, i.getId()));
+									}
 								}
 							}
-							else if (menuVendedor == 2) { // OK
+							else if (opcaoMenuVendedor == 2) { // OK
 								List<ProdutoModel> allProdutos = produtoService.getAllProdutos();
 								for (ProdutoModel i : allProdutos) {
-									System.out.println("Produto: " + i.getNome() + " Id Categoria: " + i.getIdCategoria());
+									System.out.println(i.getId() + ". " + i.getNome());
 								}
 							}
-							else if (menuVendedor == 3) { // BUG
-								System.out.print("Nome da produto para atualizacao:");
-								String nomeAtualizacao = sc1.nextLine();
-								List<ProdutoModel> produtos = produtoService.findProdutoByNome(nomeAtualizacao);
+							else if (opcaoMenuVendedor == 3) { // OK
+								List<ProdutoModel> produtosUpdate = produtoService.getAllProdutos();
 
-								if (produtos.size() > 0) {
-									System.out.print("Novo nome: ");
-									String novoNome = sc.nextLine();
-									Double novoPreco = sc.nextDouble();
-									produtoService.createProduto(new ProdutoModel(novoNome, novoPreco, produtos.get(0).getId()));
-									categoriaService.createCategoria(new CategoriaModel(novoNome));
+								for (ProdutoModel i : produtosUpdate) {
+									System.out.println(i.getId() + ". " + i.getNome());
+								}
+								System.out.println("Id do produto para atualizacao: ");
+								int idAtualizacao = sc1.nextInt();
+
+								for (ProdutoModel i : produtosUpdate) {
+									if (i.getId() == idAtualizacao) {
+										System.out.print("Novo nome: ");
+										String novoNome = sc2.nextLine();
+										System.out.print("Novo preco: ");
+										Double novoPreco = sc2.nextDouble();
+										i.setNome(novoNome);
+										i.setPreco(novoPreco);
+										produtoService.updateProduto(i);
+									}
 								}
 							}
-							else if (menuVendedor == 4) { //OK
-								System.out.println("Quer mesmo deletar o produto?");
-								System.out.println("1. Sim" +
-										"\n2. Não");
-								System.out.print("Opcao: ");
-								int opcaoDeletar = sc.nextInt();
-								if (opcaoDeletar == 1) {
-									List<ProdutoModel> produtosDelete = produtoService.getAllProdutos();
-									System.out.print("Produtos cadastrados:");
-									for (ProdutoModel i : produtosDelete) {
-										System.out.println(i.getNome());
-									}
-									System.out.print("Produto para deletar: ");
-									String nomeProdutoDelete = sc1.nextLine();
-									List<ProdutoModel> produtoDelete = produtoService.findProdutoByNome(nomeProdutoDelete);
-									if (produtoDelete.size() > 0) {
-										for (ProdutoModel i : produtoDelete) {
-											produtoService.deleteProdutoById(i.getId());
+							else if (opcaoMenuVendedor == 4) { //OK
+								List<ProdutoModel> produtosDelete = produtoService.getAllProdutos();
+
+								for (ProdutoModel i : produtosDelete) {
+									System.out.println(i.getId() + ". " + i.getNome());
+								}
+								System.out.print("Id do produto para deletar: ");
+								Long idProdutoDelete = sc1.nextLong();
+								for (ProdutoModel i : produtosDelete) {
+									if (i.getId() == idProdutoDelete) {
+										System.out.println("Quer mesmo deletar o produto?");
+										System.out.println("1. Sim" +
+												"\n2. Não");
+										System.out.print("Opcao: ");
+										int confirmarDelete = sc1.nextInt();
+										if (confirmarDelete == 1) {
+											produtoService.deleteProdutoById(idProdutoDelete);
+										}
+										else if (confirmarDelete == 2) {
+											System.out.println("Cancelado.");
+										}
+										else {
+											System.out.println("Opcao invalida");
 										}
 									}
+									else {
+										System.out.println("Produto nao encontrado");
+									}
 								}
-							}
-							else if (menuVendedor == 5) {
-								break;
 							}
 							else {
 								System.out.println("opcao invalida.");
 							}
-						}
-
-
-						System.out.println("LOGOU LOGOU vendedor");
+						} while(opcaoMenuVendedor != 5);
 					}
 					else {
 						System.out.println("Nao logou");
