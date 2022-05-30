@@ -60,7 +60,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 					"\n2. Cadastro" +
 					"\n0. Sair");
 			System.out.print("Opcao: ");
-			opcaoMenu = sc.nextInt();
+			opcaoMenu = Integer.parseInt(sc.nextLine());
 
 //--------------------------------------------------------LOGIN---------------------------------------------------------
 			if (opcaoMenu == 1) {
@@ -73,16 +73,14 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 				Boolean isLoggedIn = false;
 
 				System.out.print("Opcao: ");
-				opcaoLogin = sc.nextInt();
+				opcaoLogin = Integer.parseInt(sc.nextLine());
 
 //-------------------------------------------------LOGIN ADMINISTRADOR--------------------------------------------------
 				if (opcaoLogin == 1) { // OK
-					clearBuffer(sc);
 					System.out.print("Username: ");
 					username = sc.nextLine();
-					clearBuffer(sc);
 					System.out.print("Password: ");
-					password = sc1.nextLine();
+					password = sc.nextLine();
 					isLoggedIn = login(UserTypeEnum.Administrador, username, password);
 
 					if (isLoggedIn) {
@@ -93,12 +91,11 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 									"\n3. Atualizar categoria" +
 									"\n4. Excluir categoria" +
 									"\n5. Logout");
-							clearBuffer(sc);
-							opcaoMenuAdm = sc.nextInt();
+							opcaoMenuAdm = Integer.parseInt(sc.nextLine());
 
 							if (opcaoMenuAdm == 1) { // OK
 								System.out.print("Nome da nova categoria: ");
-								String nomeCadastro = sc2.nextLine();
+								String nomeCadastro = sc.nextLine();
 								try {
 									categoriaService.createCategoria(new CategoriaModel(nomeCadastro.toUpperCase(Locale.ROOT)));
 
@@ -120,11 +117,11 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 									System.out.println(i.getId() + ". " + i.getNome());
 								}
 								System.out.print("Id:");
-								int idAtualizacao = sc.nextInt();
+								int idAtualizacao = Integer.parseInt(sc.nextLine());
 								for (CategoriaModel i : categoriasUpdate) {
 									if (i.getId() == idAtualizacao) {
 										System.out.print("Nome para atualizar: ");
-										String nomeAtualizacao = sc1.nextLine().toUpperCase(Locale.ROOT);
+										String nomeAtualizacao = sc.nextLine().toUpperCase(Locale.ROOT);
 										i.setNome(nomeAtualizacao);
 										categoriaService.updateCategoria(i);
 									}
@@ -135,7 +132,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 								System.out.println("1. Sim" +
 										"\n2. Não");
 								System.out.print("Opcao: ");
-								int opcaoMenu4 =  sc1.nextInt();
+								int opcaoMenu4 =  Integer.parseInt(sc.nextLine());
 								if (opcaoMenu4 == 1) {
 									List<CategoriaModel> categoriasDelete = categoriaService.getAllCategorias();
 									System.out.print("Categorias cadastradas:");
@@ -143,7 +140,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 										System.out.println(i.getId() + ". " + i.getNome());
 									}
 									System.out.print("Id da categoria para deletar: ");
-									int idCategoriaDelete = sc.nextInt();
+									int idCategoriaDelete = Integer.parseInt(sc.nextLine());
 
 									for (CategoriaModel i : categoriasDelete) {
 										if (i.getId() == idCategoriaDelete) {
@@ -175,9 +172,9 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 //----------------------------------------------------LOGIN VENDEDOR----------------------------------------------------
 				else if (opcaoLogin == 2) {
 					System.out.print("Username: ");
-					username = sc3.nextLine();
+					username = sc.nextLine();
 					System.out.print("Password: ");
-					password = sc3.nextLine();
+					password = sc.nextLine();
 					isLoggedIn = login(UserTypeEnum.Vendedor, username, password);
 
 					if (isLoggedIn) {
@@ -190,7 +187,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 									"\n4. Excluir produto" +
 									"\n5. Logout");
 							System.out.print("Opcao: ");
-							opcaoMenuVendedor = sc.nextInt();
+							opcaoMenuVendedor = Integer.parseInt(sc.nextLine());
 
 							if (opcaoMenuVendedor == 1) { // OK
 								System.out.println("Categorias:");
@@ -199,14 +196,14 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 									System.out.println(i.getId() + ". " + i.getNome());
 								}
 								System.out.print("Escolha o id da categoria: ");
-								int idCategoria = sc1.nextInt();
+								int idCategoria = Integer.parseInt(sc.nextLine());
 
 								for (CategoriaModel i : categorias) {
 									if (i.getId() == idCategoria) {
 										System.out.print("Nome do produto: ");
 										String nomeProduto = sc2.nextLine();
 										System.out.print("Preco do produto: ");
-										Double precoProduto = sc2.nextDouble();
+										Double precoProduto = Double.parseDouble(sc.nextLine());
 										try {
 											produtoService.createProduto(new ProdutoModel(nomeProduto.toUpperCase(Locale.ROOT), precoProduto, i.getId()));
 										} catch (ProdutoAlreadyExistsException e) {
@@ -228,15 +225,15 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 									System.out.println(i.getId() + ". " + i.getNome());
 								}
 								System.out.println("Id do produto para atualizacao: ");
-								int idAtualizacao = sc1.nextInt();
+								int idAtualizacao = Integer.parseInt(sc.nextLine());
 
 								for (ProdutoModel i : produtosUpdate) {
 									if (i.getId() == idAtualizacao) {
 										System.out.print("Novo nome: ");
-										String novoNome = sc2.nextLine();
+										String novoNome = sc.nextLine();
 										System.out.print("Novo preco: ");
-										Double novoPreco = sc2.nextDouble();
-										i.setNome(novoNome);
+										Double novoPreco = Double.parseDouble(sc.nextLine());
+										i.setNome(novoNome.toUpperCase(Locale.ROOT));
 										i.setPreco(novoPreco);
 										produtoService.updateProduto(i);
 									}
@@ -249,14 +246,14 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 									System.out.println(i.getId() + ". " + i.getNome());
 								}
 								System.out.print("Id do produto para deletar: ");
-								Long idProdutoDelete = sc1.nextLong();
+								Long idProdutoDelete = Long.parseLong(sc.nextLine());
 								for (ProdutoModel i : produtosDelete) {
 									if (i.getId() == idProdutoDelete) {
 										System.out.println("Quer mesmo deletar o produto?");
 										System.out.println("1. Sim" +
 												"\n2. Não");
 										System.out.print("Opcao: ");
-										int confirmarDelete = sc1.nextInt();
+										int confirmarDelete = Integer.parseInt(sc.nextLine());
 										if (confirmarDelete == 1) {
 											produtoService.deleteProdutoById(idProdutoDelete);
 										}
@@ -297,9 +294,9 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 						do {
 							System.out.println("1. Navegar no Ecommerce" +
 									"\n2. Visualizar compras" +
-									"\n2. Logout");
+									"\n3. Logout");
 							System.out.print("Opcao: ");
-							opcaoMenuCliente = sc2.nextInt();
+							opcaoMenuCliente = Integer.parseInt(sc.nextLine());
 							if (opcaoMenuCliente == 1) {
 								int opcaoCompras = 0;
 								do {
@@ -307,7 +304,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 											"\n2. Visualizar carrinho" +
 											"\n3. Encerrar compras");
 									System.out.print("Opcao: ");
-									opcaoCompras = sc2.nextInt();
+									opcaoCompras = Integer.parseInt(sc.nextLine());
 									if (opcaoCompras == 1) {
 										List<ProdutoModel> produtos = produtoService.getAllProdutos();
 										for (ProdutoModel i : produtos) {
@@ -317,10 +314,10 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 										System.out.println("Deseja adicionar algum produto? ");
 										System.out.println("1. Sim" +
 												"\n2. Não");
-										int adicionarProduto = sc2.nextInt();
+										int adicionarProduto = Integer.parseInt(sc.nextLine());
 										if (adicionarProduto == 1 ) {
 											System.out.print("Id do produto: ");
-											Long idProdutoAdicionar = sc2.nextLong();
+											Long idProdutoAdicionar = Long.parseLong(sc.nextLine());
 											for (ProdutoModel j : produtos) {
 												if (j.getId() == idProdutoAdicionar) {
 													carrinhoDeCompras.addProduto(j);
@@ -346,7 +343,7 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 												"\n3. Crédito" +
 												"\n4. Pix");
 										System.out.print("Metodo de pagamento:");
-										int metodoPagamento = sc3.nextInt();
+										int metodoPagamento = Integer.parseInt(sc.nextLine());
 										System.out.println("Endereco de envio: ");
 										String enderecoEnvio = sc.nextLine();
 										for (ProdutoModel i : carrinhoDeCompras.getProdutos()) {
@@ -383,10 +380,10 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 
 							}
 							else if (opcaoMenuCliente == 2) {
-								System.out.println("Logout.");
+
 							}
 							else if (opcaoMenuCliente == 3) {
-
+								System.out.println("Logout.");
 							}
 							else {
 								System.out.println("Opcao invalida.");
@@ -409,12 +406,12 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 				String username = "";
 				String password = "";
 				System.out.print("Opcao: ");
-				int opcaoMenuCadastro = sc.nextInt();
+				int opcaoMenuCadastro = Integer.parseInt(sc.nextLine());
 
 				//CADASTRO DE VENDEDOR
 				if (opcaoMenuCadastro == 1) {
 					System.out.print("Username para cadastro: ");
-					username = sc1.nextLine();
+					username = sc.nextLine();
 					System.out.print("Password para cadastro: ");
 					password = sc.nextLine();
 					try {
@@ -428,9 +425,9 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 				//CADASTRO DE CLIENTE
 				else if (opcaoMenuCadastro == 2) {
 					System.out.print("Username para cadastro: ");
-					username = sc1.nextLine();
+					username = sc.nextLine();
 					System.out.print("Password para cadastro: ");
-					password = sc2.nextLine();
+					password = sc.nextLine();
 					try {
 						usuarioService.createUsuario(new UsuarioModel(UserTypeEnum.Cliente, username, password));
 						System.out.println("Usuario cliente cadastrado com sucesso.");
