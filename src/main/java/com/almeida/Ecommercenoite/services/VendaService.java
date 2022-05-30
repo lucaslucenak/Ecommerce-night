@@ -36,6 +36,10 @@ public class VendaService {
         vendaRepository.deleteById(id);
     }
 
+    public List<VendaModel> findVendaByIdCliente (Long idCliente) {
+        return  vendaRepository.findVendaByIdCliente(idCliente);
+    }
+
     public void setEnvioStatus(Long id, Boolean status) {
         getVendaById(id).stream().filter(venda -> Objects.equals(venda.getId(), id)).forEach(venda -> {
             venda.setFoiEnviado(status);

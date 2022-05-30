@@ -16,8 +16,7 @@ import javax.persistence.*;
 @Table(name = "tb_vendas")
 public class VendaModel {
 
-    public VendaModel(Long idCarrinho, Long idCliente, Long idProduto, TipoPagamentoEnum tipoPagamento, String enderecoEnvio) {
-        this.idCarrinho = idCarrinho;
+    public VendaModel(Long idCliente, Long idProduto, TipoPagamentoEnum tipoPagamento, String enderecoEnvio) {
         this.idCliente = idCliente;
         this.idProduto = idProduto;
         this.tipoPagamento = tipoPagamento;
@@ -28,9 +27,6 @@ public class VendaModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @Column(name = "idCarrinho")
-    private Long idCarrinho;
 
     @Column(name = "idCliente")
     private Long idCliente;

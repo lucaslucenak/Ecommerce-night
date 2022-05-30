@@ -20,10 +20,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SpringBootApplication
@@ -348,22 +345,22 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 										String enderecoEnvio = sc.nextLine();
 										for (ProdutoModel i : carrinhoDeCompras.getProdutos()) {
 											if (metodoPagamento == 1) {
-												vendaService.createVenda(new VendaModel( carrinhoDeCompras.getId(),
+												vendaService.createVenda(new VendaModel(
 														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), TipoPagamentoEnum.BOLETO, enderecoEnvio
 												));
 											}
 											else if (metodoPagamento == 2) {
-												vendaService.createVenda(new VendaModel( carrinhoDeCompras.getId(),
+												vendaService.createVenda(new VendaModel(
 														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), TipoPagamentoEnum.DEBITO, enderecoEnvio
 												));
 											}
 											else if (metodoPagamento == 3) {
-												vendaService.createVenda(new VendaModel( carrinhoDeCompras.getId(),
+												vendaService.createVenda(new VendaModel(
 														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), TipoPagamentoEnum.CREDITO, enderecoEnvio
 												));
 											}
 											else if (metodoPagamento == 4) {
-												vendaService.createVenda(new VendaModel( carrinhoDeCompras.getId(),
+												vendaService.createVenda(new VendaModel(
 														usuarioService.findUsuarioByNome(username).get(0).getId(), i.getId(), TipoPagamentoEnum.PIX, enderecoEnvio
 												));
 											}
@@ -380,7 +377,15 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 
 							}
 							else if (opcaoMenuCliente == 2) {
-
+								List<VendaModel> vendas = vendaService.findVendaByIdCliente(usuarioService.findUsuarioByNome(username).get(0).getId());
+								for (VendaModel i : vendas) {
+									Optional<ProdutoModel> produtoOptional = produtoService.getProdutoById(i.getIdProduto());
+									ProdutoModel produto = produtoOptional.get();
+									System.out.println("Produto: " + produto.getNome() +
+											"\nR$" + produto.getPreco() +
+											"\nEnvio: " + i.getFoiEnviado());
+									System.out.println("----------------");
+								}
 							}
 							else if (opcaoMenuCliente == 3) {
 								System.out.println("Logout.");
