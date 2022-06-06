@@ -16,6 +16,7 @@ import com.almeida.Ecommercenoite.services.CategoriaService;
 import com.almeida.Ecommercenoite.services.ProdutoService;
 import com.almeida.Ecommercenoite.services.UsuarioService;
 import com.almeida.Ecommercenoite.services.VendaService;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -418,8 +419,8 @@ public class EcommerceNoiteApplication implements CommandLineRunner {
 									opcaoCompras = Integer.parseInt(sc.nextLine());
 									if (opcaoCompras == 1) {
 										List<ProdutoModel> produtos = produtoService.getAllProdutos();
+										System.out.println("Produtos: ");
 										for (ProdutoModel i : produtos) {
-											System.out.println("Produtos: ");
 											System.out.println(i.getId() + ". " + i.getNome() + " R$" + i.getPreco());
 										}
 										System.out.println("Deseja adicionar algum produto? ");
